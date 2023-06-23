@@ -1,0 +1,32 @@
+---
+- hosts: hackaton
+  become: true
+  vars:
+    users:
+      - username: korvalanni
+        group: backend
+        ssh_key: "{{ lookup('file', '/root/ansible/korvalanni.pub') }}"
+      - username: testkey
+        group: hackaton
+        ssh_key: "{{ lookup('file', '/root/ansible/testkey.pub') }}"
+  tasks:
+  - name: Ensure group exists
+    group:
+      name: "{{ item.group }}"
+      state: present
+    with_items: "{{ users }}"
+
+  - name: create users
+    user:
+      name: "{{ item.username }}"
+      group: "{{ item.group }}"
+      generate_ssh_key: no
+    with_items: "{{ users }}"
+
+  - name: Add ssh key to user
+    authorized_key:
+      user: "{{ item.username }}"
+      state: present
+      key: "{{ item.ssh_key }}"
+    with_items: "{{ users }}"
+...
