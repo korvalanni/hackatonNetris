@@ -1,4 +1,4 @@
-package ru.urfu.FrameVision.controllers;
+package ru.urfu.FrameVision.fileupload;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
@@ -6,6 +6,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
+import ru.urfu.FrameVision.models.Video;
 
 import java.io.File;
 import java.io.IOException;
@@ -21,8 +22,8 @@ public class FileUploadController {
 
     @PostMapping("/upload-video")
     public ResponseEntity<String> uploadFile(
-            @RequestParam("chunkId") Long chunkId,
-            @RequestParam("video") MultipartFile video,
+            @RequestParam("chunk_id") Long chunkId,
+            @RequestParam("chunk") MultipartFile video,
             @RequestParam("client_id") String clientId,
             @RequestParam("video_id") String videoId,
             @RequestParam("complete") Boolean complete
@@ -43,9 +44,12 @@ public class FileUploadController {
             // Save the chunk
             Path path = Paths.get(uploadDir + fileName);
             Files.write(path, video.getBytes());
+//            Video video = new Video();
+//            videoService.markAsStarted();
             if(complete) {
                 videoService.markAsProcessed(videoId);
             }
+
 
             return ResponseEntity.ok("Chunk received successfully");
         } catch (IOException e) {
