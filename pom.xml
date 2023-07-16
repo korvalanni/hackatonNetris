@@ -12,7 +12,7 @@
 	<artifactId>FrameVision</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>FrameVision</name>
-	<description>PyzhyanovChangeReviewStyle</description>
+	<description>Приемщик кусокв видео</description>
 	<properties>
 		<java.version>17</java.version>
 		<spotbugs.version>4.7.3</spotbugs.version>
